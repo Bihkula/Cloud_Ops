@@ -1,112 +1,44 @@
-# Cirrus
+# 2018 Data
 
-A simple, good-looking finance app with a futuristic **sky-blue, Apple-style
-glass** UI. Track income and spending, watch your balance update, and see where
-your money goes — behind bright frosted-glass panels floating over a soft sky.
+Archive of datasets and articles from the 2018 series of `#TidyTuesday` events.
 
-Built to be the first building block of an end-to-end DevOps project: one
-self-contained, container-ready app with a database, ready to deploy to AWS.
-
-**No build tooling.** Python backend + a plain HTML/CSS/JS frontend. No Maven,
-no npm, no bundler — just `pip install` and run.
-
-![Cirrus](docs/preview.png)
-
-## Stack
-
-- **Backend:** Python 3.12, FastAPI (REST API)
-- **Database:** SQLite for local dev (zero setup), PostgreSQL in the cloud — via SQLAlchemy
-- **Frontend:** vanilla HTML/CSS/JS served by FastAPI (no build step)
-- **Ops-ready:** Docker image + `/metrics` Prometheus endpoint for later monitoring
-
-## Project structure
-
-```
-cirrus/
-├── requirements.txt          # runtime deps
-├── requirements-dev.txt      # + test deps
-├── Dockerfile                # slim, non-root image
-├── app/
-│   ├── main.py               # FastAPI app + routes + static mount
-│   ├── database.py           # SQLAlchemy engine/session (DATABASE_URL)
-│   ├── models.py             # Transaction ORM model
-│   ├── schemas.py            # Pydantic request/response models
-│   └── seed.py               # sample data on first run
-├── static/                   # the glass UI (index.html, css, js)
-└── tests/
-    └── test_api.py           # API tests (pytest)
-```
-
-## Run it locally
-
-You need **Python 3.11+**.
-
-```bash
-python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8080
-```
-
-Open <http://localhost:8080>. It starts with a local SQLite database seeded with
-sample transactions — nothing else to install. (`--reload` is for development.)
-
-### Or with Docker
-
-```bash
-docker build -t cirrus:local .
-docker run -p 8080:8080 cirrus:local
-```
-
-## Run the tests
-
-```bash
-pip install -r requirements-dev.txt
-pytest -q
-```
-
-## API
-
-| Method | Path | Purpose |
-|--------|------|---------|
-| GET | `/api/transactions` | list all transactions |
-| GET | `/api/transactions/summary` | income, expense, balance totals |
-| POST | `/api/transactions` | add one (JSON body) |
-| DELETE | `/api/transactions/{id}` | remove one |
-| GET | `/health` | health check |
-| GET | `/metrics` | Prometheus metrics (for monitoring later) |
-| GET | `/docs` | auto-generated interactive API docs (FastAPI) |
-
-Example:
-
-```bash
-curl -X POST http://localhost:8080/api/transactions \
-  -H "Content-Type: application/json" \
-  -d '{"description":"Lunch","amount":12.50,"type":"EXPENSE","category":"Food","date":"2026-07-04"}'
-```
-
-## Running against Postgres (for AWS)
-
-The app reads its database connection from the `DATABASE_URL` environment
-variable. Point it at RDS (or any Postgres) and it just works — SQLAlchemy creates
-the schema on first start:
-
-```bash
-export DATABASE_URL="postgresql+psycopg2://cirrus:<password>@<host>:5432/cirrus"
-uvicorn app.main:app --host 0.0.0.0 --port 8080
-```
-
-With no `DATABASE_URL` set, it falls back to local SQLite.
-
-## About the design
-
-The look is modelled on Apple's frosted "liquid glass" surfaces (think iOS
-Control Center or the Weather app): a bright sky-blue gradient with drifting light,
-translucent white panels with heavy background blur, hairline highlights along the
-top edge, and SF Pro typography (with Inter as a fallback on non-Apple devices).
-
-## What's next
-
-This repo is just the app. Later steps can add infrastructure (Terraform), a
-Kubernetes deployment (Helm), CI/CD (Jenkins), GitOps (ArgoCD), and monitoring
-(Prometheus + Grafana) around it. Because it's a plain container exposing `/health`
-and `/metrics`, it drops into all of that cleanly.
+| Week|Date       |Data                                                  |Source                                                                                 |Article                                     |
+|----:|:----------|:-----------------------------------------------------|:--------------------------------------------------------------------------------------|:-------------------------------------------|
+|    1|2018-04-03 |[US Tuition Costs](2018-04-02)                        |[onlinembapage.com](https://onlinembapage.com/average-tuition-and-educational-attainment-in-the-united-states/)|[onlinembapage.com](https://onlinembapage.com/wp-content/uploads/2016/03/AverageTuition_Part1b.jpg)|
+|    2|2018-04-10 |[NFL Positional Salaries](2018-04-09)                 |[Spotrac.com](http://www.spotrac.com/rankings/)                                        |[fivethirtyeight.com](https://espnfivethirtyeight.files.wordpress.com/2017/05/morris-nflrb-1.png?w=575&h=488&quality=90&strip=info)|
+|    3|2018-04-17 |[Global Mortality](2018-04-16)                        |[ourworldindata.org](https://ourworldindata.org/)                                      |[ourworldindata.org](https://ourworldindata.org/what-does-the-world-die-from)|
+|    4|2018-04-24 |[Australian Salaries by Gender](2018-04-23)           |[data.gov.au](https://data.gov.au/dataset/taxation-statistics-2013-14/resource/c506c052-be2f-4fba-8a65-90f9e60f7775?inner_span=True)|[data.gov.au](https://data.gov.au/dataset/taxation-statistics-2013-14/resource/c506c052-be2f-4fba-8a65-90f9e60f7775?inner_span=True)|
+|    5|2018-05-01 |[ACS Census Data (2015)](2018-04-30)                  |[census.gov](https://factfinder.census.gov/faces/nav/jsf/pages/index.xhtml) , [Kaggle](https://www.kaggle.com/muonneutrino/us-census-demographic-data)|No article                                  |
+|    6|2018-05-08 |[Global Coffee Chains](2018-05-07)                    |[Starbucks: kaggle.com](https://www.kaggle.com/starbucks/store-locations) , [Tim Horton: timhortons.com](https://locations.timhortons.com/) , [Dunkin Donuts: odditysoftware.com](http://www.odditysoftware.com/download/download.php?filename=dunkin-donuts.zip)|[flowingdata.com](http://flowingdata.com/2014/03/18/coffee-place-geography/)|
+|    7|2018-05-15 |[Star Wars Survey](2018-05-14)                        |[fivethirtyeight package](https://github.com/rudeboybert/fivethirtyeight)              |[fivethirtyeight.com](https://fivethirtyeight.com/features/americas-favorite-star-wars-movies-and-least-favorite-characters/)|
+|    8|2018-05-22 |[US Honey Production](2018-05-21)                     |[USDA](http://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1520), [Kaggle.com](https://www.kaggle.com/jessicali9530/honey-production)|[Bee Culture](http://www.beeculture.com/u-s-honey-industry-report-2016/)|
+|    9|2018-05-29 |[Comic book characters](2018-05-29)                   |[FiveThirtyEight package](https://github.com/rudeboybert/fivethirtyeight)              |[FiveThirtyEight.com](https://fivethirtyeight.com/features/women-in-comic-books/)|
+|   10|2018-06-05 |[Biketown Bikeshare](2018-06-05)                      |[BiketownPDX](https://www.biketownpdx.com/system-data)                                 |[Biketown](https://www.biketownpdx.com/system-data) [cascadiaRconf/cRaggy](https://cascadiarconf.com/agenda/#craggy)|
+|   11|2018-06-12 |[FIFA World Cup Audience](2018-06-12)                 |[FiveThirtyEight package](https://github.com/rudeboybert/fivethirtyeight)              |[FiveThirtyEight.com](https://fivethirtyeight.com/features/how-to-break-fifa/)|
+|   12|2018-06-19 |[Hurricanes & Puerto Rico](2018-06-19)                |[FiveThirtyEight package](https://github.com/rudeboybert/fivethirtyeight)              |[FiveThirtyEight.com](https://fivethirtyeight.com/features/the-media-really-has-neglected-puerto-rico/)|
+|   13|2018-06-26 |[Alcohol Consumption](2018-06-26)                     |[FiveThirtyEight package](https://github.com/rudeboybert/fivethirtyeight)              |[FiveThirtyEight.com](https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/)|
+|   14|2018-07-03 |[Global Life Expectancy](2018-07-03)                  |[ourworldindata.org](https://ourworldindata.org/)                                      |[ourworldindata.org](https://ourworldindata.org/life-expectancy)|
+|   15|2018-07-10 |[Craft Beer USA](2018-07-10)                          |[data.world](https://data.world/)                                                      |[thrillist.com](https://www.thrillist.com/news/nation/most-craft-breweries-by-state-united-states)|
+|   16|2018-07-17 |[Exercise USA](2018-07-17)                            |[CDC](https://www.cdc.gov/)                                                            |[CDC - National Health Statistics Reports](https://www.cdc.gov/nchs/data/nhsr/nhsr112.pdf)|
+|   17|2018-07-24 |[p-hack-athon collaboration](http://phackathon.netlify.com/#about)|[simplystatistics.org](https://simplystatistics.org/)                                  |[p-hack-athon](http://phackathon.netlify.com/)|
+|   18|2018-07-31 |[Dallas Animal Shelter FY2017](2018-07-31)            |[Dallas OpenData](https://www.dallasopendata.com/City-Services/FY-2017-Dallas-Animal-Shelter-Data/sjyj-ydcj)|[Dallas OpenData FY2017 Summary](https://www.dallasopendata.com/stories/s/FY-2017-Dallas-Animal-Descriptive-Analysis/upeh-b6mt)|
+|   19|2018-08-07 |[Airline Safety](2018-08-07)                          |[FiveThirtyEight Package](https://github.com/rudeboybert/fivethirtyeight)              |[538 - Airline Safety](https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/)|
+|   20|2018-08-14 |[Russian Troll Tweets](https://github.com/fivethirtyeight/russian-troll-tweets)|[FiveThirtyEight.com](https://github.com/fivethirtyeight/russian-troll-tweets)         |[538 - Russian Troll Tweets](https://fivethirtyeight.com/features/why-were-sharing-3-million-russian-troll-tweets/)|
+|   21|2018-08-21 |[California Fires](2018-08-21)                        |[BuzzFeed.com](https://github.com/BuzzFeedNews/2018-07-wildfire-trends)                |[BuzzFeed News - California Fires](https://www.buzzfeednews.com/article/peteraldhous/california-wildfires-people-climate), [RMarkdown](https://buzzfeednews.github.io/2018-07-wildfire-trends/)|
+|   22|2018-08-28 |[NFL Stats](2018-08-28)                               |[pro-football-reference.com](https://www.pro-football-reference.com/)                  |[eldo.co](https://www.eldo.co/nfl-rushing-and-passing-in-four-charts.html)|
+|   23|2018-09-04 |[Fast Food Calories](2018-09-04)                      |[fastfoodnutrition.org](https://fastfoodnutrition.org/)                                |[franchiseopportunities.com](https://www.franchiseopportunities.com/blog/general-franchise-information/fast-food-calorie-comparison-charts)|
+|   24|2018-09-11 |[Cats vs Dogs (USA)](2018-09-11)                      |[data.world](https://data.world/datanerd/cat-vs-dog-popularity-in-u-s)                 |[Washington Post](https://www.washingtonpost.com/news/wonk/wp/2014/07/28/where-cats-are-more-popular-than-dogs-in-the-u-s-and-all-over-the-world/?utm_term=.b50cb49b78b5)|
+|   25|2018-09-18 |[US Flights or Hypoxia](2018-09-18)                   |[faa.gov](https://www.faa.gov/airports/planning_capacity/passenger_allcargo_stats/passenger/previous_years/)<br/>[Soaring Society of America](https://github.com/rfordatascience/tidytuesday/files/2343596/Hypoxia.Article.proof.pdf)|[travelweekly.com](https://www.travelweekly.com/Travel-News/Airline-News/In-trend-reversal-midsized-airports-are-growing)<br/> [SSA - Hypoxia](https://github.com/rfordatascience/tidytuesday/files/2343596/Hypoxia.Article.proof.pdf)|
+|   26|2018-09-25 |[Global Invasive Species](2018-09-25)                 |[Paini et al, 2016](http://www.pnas.org/content/113/27/7575)<br/>[griis.org](http://www.griis.org/)|[Paini et al, 2016](http://www.pnas.org/content/113/27/7575)<br/>[griis.org](http://www.griis.org/)|
+|   27|2018-10-02 |[US Births](2018-10-02)                               |[fivethirtyeight package](https://github.com/rudeboybert/fivethirtyeight)              |[538 - Births](https://fivethirtyeight.com/features/some-people-are-too-superstitious-to-have-a-baby-on-friday-the-13th/)|
+|   28|2018-10-09 |[US Voter Turnout](2018-10-09)                        |[data.world](https://data.world/carlvlewis/voter-registration-and-criminal-records-by-state-1980-2014)|[Star Tribune](http://www.startribune.com/minnesota-leads-nation-in-turnout/400763681/)|
+|   29|2018-10-16 |[College Major & Income](2018-10-16)                  |[fivethirtyeight/ACS](https://github.com/fivethirtyeight/data/tree/master/college-majors)|[fivethirtyeight](https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/)|
+|   30|2018-10-23 |[Horror Movie Profit](2018-10-23)                     |[the-numbers.com](https://www.the-numbers.com/)                                        |[fivethirtyeight](https://fivethirtyeight.com/features/scary-movies-are-the-best-investment-in-hollywood/)|
+|   31|2018-10-30 |[R and R package downloads](2018-10-30)               |[cran-logs.rstudio.com](http://cran-logs.rstudio.com/)                                 |No Article                                  |
+|   32|2018-11-06 |[US Wind Farm locations](2018-11-06)                  |[usgs.gov](https://eerscmap.usgs.gov/uswtdb/data/)                                     |[Wind Market Reports](https://www.energy.gov/eere/wind/2017-wind-market-reports)|
+|   33|2018-11-13 |[Malaria Data](2018-11-13)                            |[ourworldindata.org](https://ourworldindata.org/malaria)<br/>[Malaria Data Challenge](https://www.synapse.org/#!Synapse:syn16788291/wiki/583310)|[ourworldindata.org](https://ourworldindata.org/malaria) [`malariaAtlas`](https://github.com/malaria-atlas-project/malariaAtlas)|
+|   34|2018-11-20 |[Thanksgiving Dinner or Transgender Day of Remembrance](2018-11-20)|[fivethirtyeight](https://github.com/fivethirtyeight/data/tree/master/thanksgiving-2015)<br/>[TDoR](https://github.com/CaRdiffR/tdor)|[fivethirtyeight](https://fivethirtyeight.com/features/heres-what-your-part-of-america-eats-on-thanksgiving/)<br/>[TDoR](https://docs.google.com/presentation/d/1PNMa6LmjsofR8FUrnXHnwdMrvxTrBMZU2Lh8DQrsmr0/edit#slide=id.g47d8b045e7_0_127)|
+|   35|2018-11-27 |[Baltimore Bridges](2018-11-27)                       |[Federal Highway Administration](https://www.fhwa.dot.gov/bridge/nbi.cfm)              |[Baltimore Sun](https://www.baltimoresun.com/news/maryland/bs-md-bridge-collapse-maryland-20180815-story.html)|
+|   36|2018-12-04 |[Medium Article Metadata](2018-12-04)                 |[Kaggle.com](https://www.kaggle.com/harrisonjansma/medium-stories)                     |[TidyText package](https://github.com/juliasilge/tidytext)|
+|   37|2018-12-11 |[NYC Restaurant inspections](2018-12-11)              |[NYC OpenData/NYC Health Department](https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j)|[FiveThirtyEight](https://fivethirtyeight.com/features/how-data-made-me-a-believer-in-new-york-citys-restaurant-grades/)|
+|   38|2018-12-18 |[Cetaceans Data](2018-12-18)                          |[The Pudding](https://github.com/the-pudding/data/tree/master/cetaceans)               |[The Pudding](https://pudding.cool/2017/07/cetaceans/)|
