@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="theme-color" content="#CDE8FF"/>
+    <title>Cirrus — clear skies for your money</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <!-- Inter is a fallback; on Apple devices the CSS stack prefers SF Pro -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+    <!-- Soft drifting light, like sky and cloud, behind the glass -->
+    <div class="sky" aria-hidden="true">
+        <span class="cloud cloud--1"></span>
+        <span class="cloud cloud--2"></span>
+        <span class="cloud cloud--3"></span>
+    </div>
+
+    <main class="app">
+        <header class="topbar">
+            <div class="brand">
+                <span class="brand__mark" aria-hidden="true"></span>
+                <span class="brand__name">Cirrus</span>
+            </div>
+            <div class="topbar__meta" id="periodLabel">—</div>
+        </header>
+
+        <!-- Hero: the balance -->
+        <section class="glass hero" aria-labelledby="balanceLabel">
+            <p class="hero__label" id="balanceLabel">Total balance</p>
+            <p class="hero__value" id="balanceValue">$0.00</p>
+            <div class="hero__split">
+                <div class="split">
+                    <span class="split__chip split__chip--in">↑</span>
+                    <span class="split__col">
+                        <span class="split__label">Income</span>
+                        <span class="split__value" id="incomeValue">$0.00</span>
+                    </span>
+                </div>
+                <div class="split">
+                    <span class="split__chip split__chip--out">↓</span>
+                    <span class="split__col">
+                        <span class="split__label">Spending</span>
+                        <span class="split__value" id="expenseValue">$0.00</span>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spending by category -->
+        <section class="glass panel breakdown" aria-labelledby="breakdownLabel">
+            <div class="panel__head">
+                <h2 class="panel__title" id="breakdownLabel">Where it goes</h2>
+                <span class="panel__hint" id="breakdownTotal"></span>
+            </div>
+            <div class="bar" id="breakdownBar" role="img" aria-label="Spending by category"></div>
+            <ul class="legend" id="breakdownLegend"></ul>
+        </section>
+
+        <!-- Add a transaction -->
+        <section class="glass panel" aria-labelledby="addLabel">
+            <h2 class="panel__title" id="addLabel">Add a transaction</h2>
+            <form class="form" id="txForm" autocomplete="off">
+                <div class="toggle" role="tablist" aria-label="Transaction type" data-active="EXPENSE">
+                    <button type="button" class="toggle__btn is-active" data-type="EXPENSE" role="tab">Spending</button>
+                    <button type="button" class="toggle__btn" data-type="INCOME" role="tab">Income</button>
+                    <span class="toggle__slider" aria-hidden="true"></span>
+                </div>
+
+                <div class="field field--amount">
+                    <span class="field__prefix">$</span>
+                    <input type="number" step="0.01" min="0.01" id="amount" placeholder="0.00" required/>
+                </div>
+
+                <input class="field__input" type="text" id="description" placeholder="Description" maxlength="255" required/>
+                <input class="field__input" type="text" id="category" placeholder="Category" maxlength="50" list="categories" required/>
+                <datalist id="categories">
+                    <option value="Housing"></option>
+                    <option value="Food"></option>
+                    <option value="Utilities"></option>
+                    <option value="Transport"></option>
+                    <option value="Entertainment"></option>
+                    <option value="Health"></option>
+                    <option value="Salary"></option>
+                    <option value="Freelance"></option>
+                </datalist>
+                <input class="field__input" type="date" id="date"/>
+
+                <button type="submit" class="btn" id="submitBtn"><span>Add transaction</span></button>
+            </form>
+            <p class="form__error" id="formError" role="alert"></p>
+        </section>
+
+        <!-- Transactions -->
+        <section class="glass panel transactions" aria-labelledby="txLabel">
+            <div class="panel__head">
+                <h2 class="panel__title" id="txLabel">Recent activity</h2>
+                <span class="panel__hint" id="txCount"></span>
+            </div>
+            <ul class="tx-list" id="txList"></ul>
+            <div class="empty" id="emptyState" hidden>
+                <p>Nothing here yet</p>
+                <span>Add your first transaction above to see it appear.</span>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <span>Cirrus</span>
+            <span class="footer__dot">·</span>
+            <a href="/health">status</a>
+            <span class="footer__dot">·</span>
+            <a href="/metrics">metrics</a>
+        </footer>
+    </main>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
