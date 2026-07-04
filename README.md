@@ -10,7 +10,6 @@ the end we will have taken this code from a Git clone all the way to a running,
 observable service on AWS, driven entirely by Infrastructure as Code and a CI/CD
 pipeline.
 
-> App details (how to run it locally, the API, etc.) live in [`README.app.md`](./README.app.md).
 > This document is about **how we build and ship it as a team.**
 
 ---
