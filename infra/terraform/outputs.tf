@@ -61,3 +61,16 @@ output "node_iam_policy_arn" {
   description = "Attach to the kops node instance role via additionalPolicies"
   value       = aws_iam_policy.node_permissions.arn
 }
+output "jenkins_instance_id" {
+  description = "Use with `aws ssm start-session --target <id>` or as the Ansible inventory host"
+  value       = aws_instance.jenkins.id
+}
+
+output "jenkins_public_ip" {
+  description = "Jenkins UI will be at http://<this-ip>:8080 once installed"
+  value       = aws_instance.jenkins.public_ip
+}
+
+output "jenkins_security_group_id" {
+  value = aws_security_group.jenkins.id
+}

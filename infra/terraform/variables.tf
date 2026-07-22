@@ -115,3 +115,16 @@ variable "app_storage_bucket_name" {
   description = "Globally-unique S3 bucket name for general app object storage"
   type        = string
 }
+# ---------------- Jenkins ----------------
+
+variable "jenkins_instance_type" {
+  description = "EC2 instance type for the Jenkins CI server"
+  type        = string
+  default     = "t3.medium"
+}
+
+variable "jenkins_allowed_cidr" {
+  description = "CIDR allowed to reach the Jenkins UI on :8080. Restrict this to your own IP once you know it."
+  type        = string
+  default     = "0.0.0.0/0"
+}
