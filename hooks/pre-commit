@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v gitleaks &> /dev/null; then
+  echo "gitleaks not found on PATH - skipping secret scan."
+  echo "Install it: https://github.com/gitleaks/gitleaks#installing"
+  exit 1
+fi
+
+echo "Running gitleaks on staged changes..."
+
+if ! gitleaks protect --staged --redact --verbose --config .gitleaks.toml; then
+  echo ""
+  echo "Gitleaks found a potential secret in your staged changes."
+  echo "Commit blocked. Remove the secret, then try again."
+  exit 1
+fi
+
+echo "No secrets detected."

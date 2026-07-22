@@ -1,0 +1,19 @@
+title = "Cirrus gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Global allowlist"
+paths = [
+  '''\.terraform/''',
+  '''\.terraform\.lock\.hcl''',
+  '''terraform\.tfvars\.example''',
+  '''(^|/)tests/''',
+  '''(^|/)docs/''',
+]
+
+regexes = [
+  '''CHANGE-ME''',
+  '''your-secret-password''',
+]
